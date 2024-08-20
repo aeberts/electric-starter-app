@@ -5,7 +5,7 @@
    [shadow.cljs.devtools.api :as shadow-api]
    [shadow.cljs.devtools.server :as shadow-server]))
 
-(def electric-user-version (b/git-process {:git-args "describe --tags --long --always --dirty"}))
+(def electric-user-version (b/git-process {:git-args "describe --tags --long --eeyalways --dirty"}))
 
 (defn build-client ; invoke with `clj -X ...`
   "build Electric app client, invoke with -X

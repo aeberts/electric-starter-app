@@ -1,17 +1,23 @@
 (ns dev
   (:require
    electric-starter-app.main
+   #?(:clj [electric-starter-app.xtlib])
    [hyperfiddle.electric :as e]
+   #?(:clj [clojure.java.io :as io])
    #?(:clj [electric-starter-app.server-jetty :as jetty])
    #?(:clj [shadow.cljs.devtools.api :as shadow])
    #?(:clj [shadow.cljs.devtools.server :as shadow-server])
-   #?(:clj [clojure.tools.logging :as log])))
+   #?(:clj [clojure.tools.logging :as log])
+   ;;#?(:clj [xtdb.api :as xt])
+   ))
 
 (comment (-main)) ; repl entrypoint
 
+(def !xtdb)
+
 #?(:clj ;; Server Entrypoint
-   (do
-     (def config
+   (do 
+     (def config 
        {:host "0.0.0.0"
         :port 8080
         :resources-path "public/electric_starter_app"
@@ -30,8 +36,8 @@
                        (e/boot-server {} electric-starter-app.main/Main ring-request))
                      config))
 
-       (comment (.stop server))
-       )))
+       (comment (.stop server)))))
+
 
 #?(:cljs ;; Client Entrypoint
    (do
