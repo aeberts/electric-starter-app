@@ -3,7 +3,7 @@
    #?(:clj [clojure.java.io :as io])
    [hyperfiddle.electric :as e]
    [hyperfiddle.electric-dom2 :as dom]
-   #?(:clj [electric-starter-app.xtlib :refer [latest-db>]])
+   #?(:clj [electric-starter-app.xtlib :as db])
    [xtdb.api #?(:clj :as :cljs :as-alias) xt]
    [electric-starter-app.views :refer [TodoList]]
    ))
@@ -46,28 +46,31 @@
 
 #?(:clj
    (comment
-  ;; simple clj - add items to the xtdb database
-     (xtlib/add-item @xtlib/!xtdb-node {:xt/id 1 :name "Get Milk"}) 
-     (xtlib/add-item @xtlib/!xtdb-node {:xt/id 2 :name "Pay Taxes"})
-     (xtlib/add-item @xtlib/!xtdb-node {:xt/id 3 :name "Feed Cat"})
-     (xtlib/add-item @xtlib/!xtdb-node {:xt/id 4 :name "Go Swimming"})
 
-  ;; clj only - direct query to database
-     #?(:clj (allitems (xt/db @!xtdb-node)))
+     (xt/submit-tx @!xtdb-node [[::xt/put {:xt/id 10 :description "Feed the Horse" :status :done}]])
 
-  ;; electric - latest-db> returns a missionary `flow`
-     (type (latest-db> @!xtdb-node))
-  ;; => missionary.core$latest$fn__6359
+     (db/add-item @!xtdb-node (db/random-todo-item))
 
-  ;; To access the data in a flow use `new` to instantiate it:
-     (e/def db (new (latest-db> @!xtdb-node)))
-  ;; => #'xtlib/db_hf_server_server
-
-  ;; Instantiating it returns an "electric-only" function
+     ;; simple clj - add items to the xtdb database
+     (db/add-item @!xtdb-node {:xt/id 10 :description "Feed the Horse" :status :done})
+     
+     ;; clj only - direct query to database
+     ;;#?(:clj (allitems (xt/db @!xtdb-node)))
+     
+     ;; electric - latest-db> returns a missionary `flow`
+     (type (db/latest-db> @!xtdb-node))
+     
+     ;; => missionary.core$latest$fn__6359
+     
+     ;; To access the data in a flow use `new` to instantiate it:
+     (e/def db (new (db/latest-db> @!xtdb-node)))
+     
+     ;; => #'xtlib/db_hf_server_server
+     
+     ;; Instantiating it returns an "electric-only" function
      (type db)
-  ;; => hyperfiddle.electric.impl.lang$electric_only
+     ;; => hyperfiddle.electric.impl.lang$electric_only
      ))
-
 
 #?(:cljs
    (comment

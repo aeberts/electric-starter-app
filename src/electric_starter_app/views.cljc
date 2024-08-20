@@ -10,8 +10,6 @@
 (e/def !xtdb)
 (e/def db)
 
-;; (defn add-item [node item]
-;;   (xt/submit-tx node [[:xt/put item]]))
 
 #?(:clj (defn retrieve-all [db]
     (xt/q db

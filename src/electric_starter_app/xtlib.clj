@@ -16,3 +16,21 @@
                 (if tx-time 
                   (xt/db !xtdb {::xt/tx-time tx-time})
                   (xt/db !xtdb))))))
+
+(defn add-item [!xtdb item]
+  (xt/submit-tx !xtdb [[::xt/put item]]))
+
+(defn random-todo-item []
+  (let [id (rand-int 1000)
+        verbs ["Smell" "Bake" "Walk" "Feed" "Clean" "Mow" "Water"]
+        nouns ["bread" "cat" "hedgehog" "pool" "grass" "flowers"]
+        description (str (rand-nth verbs) " the " (rand-nth nouns))
+        statuses [:in-progress :done :not-started]
+        status (rand-nth statuses)]
+    {:xt/id id
+     :description description
+     :status status}))
+
+(comment
+  
+  )
