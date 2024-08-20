@@ -10,23 +10,12 @@
 (e/def !xtdb)
 (e/def db)
 
-
-#?(:clj (defn retrieve-all [db]
-    (xt/q db
-      '{:find [(pull ?e [*])]
-        :where [[?e :xt/id]]})))
-
 #?(:clj
    (defn all-records [db]
      (->> (xt/q db '{:find [(pull ?e [:xt/id :name])]
                      :where [[?e :xt/id]]})
        (map first)
        vec)))
-
-#?(:clj (defn todo-records [db]
-    (->> (xt/q db '{:find [(pull ?e [:xt/id :name])]
-                    :where [[?e :name]]})
-      vec)))
 
 (e/defn Item [id]
   (e/server
