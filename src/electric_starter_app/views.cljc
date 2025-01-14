@@ -12,7 +12,7 @@
 
 #?(:clj
    (defn all-records [db]
-     (->> (xt/q db '{:find [(pull ?e [:xt/id :name])]
+     (->> (xt/q db '{:find [(pull ?e [:xt/id :description :status])]
                      :where [[?e :xt/id]]})
        (map first)
        vec)))
@@ -24,14 +24,17 @@
       (e/client
         (dom/li
           (dom/label (dom/props {:for id})
-            (dom/text (e/server (:name e)))))))))
+            (dom/text (e/server (:description e)))))))))
 
 (e/defn TodoItem [id]
   (e/server 
     (let [e (xt/entity db id)]
       (e/client 
         (dom/div 
-          (dom/li (dom/label (dom/props {:for id}) (dom/text (e/server (:name e))) )))))))
+          (dom/li 
+            (dom/label 
+              (dom/props {:for id}) 
+              (dom/text (e/server (:description e))) )))))))
 
 (e/defn TodoList [!xtdb]
   (e/server
