@@ -15,3 +15,19 @@ jobs:
       - run: NO_COLOR=1 flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  run-clojure-github:
+    name : Run on GitHub servers for testing.
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Clojure CLI
+      uses: DeLaGuardo/setup-clojure@v2
+      with:
+        tools-deps: '1.11.4.1474' # Specify the tools.deps version
+
+    - name: Run your project
+      run: |
+        clj -A:dev -X dev/-main 
