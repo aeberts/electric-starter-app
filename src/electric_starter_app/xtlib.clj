@@ -20,6 +20,11 @@
 (defn add-item [!xtdb item]
   (xt/submit-tx !xtdb [[::xt/put item]]))
 
+(defn remove-item
+  "Removes an item from the XTDB database by its ID"
+  [!xtdb id]
+  (xt/submit-tx !xtdb [[::xt/delete id]]))
+
 (defn random-todo-item []
   (let [id (rand-int 1000)
         verbs ["Smell" "Bake" "Walk" "Feed" "Clean" "Mow" "Water"]
@@ -32,5 +37,5 @@
      :status status}))
 
 (comment
-  
+
   )
